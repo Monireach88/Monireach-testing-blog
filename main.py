@@ -11,6 +11,8 @@ from datetime import date
 from functools import wraps
 from flask_ckeditor import CKEditor
 from flask_gravatar import Gravatar
+# unlike sqlite which is built-in in pycharm, make sure postgreSQL's package (psycopg2-binary) has been installed
+
 
 
 # make sure the Column, String, Integer ... of SQLAlchemy will not be marked yellow
@@ -26,11 +28,18 @@ class MySQLAlchemy(SQLAlchemy):
 app = Flask(__name__)
 # initialize flask_bootstrap
 Bootstrap(app)
-# configure a Secret key to use flask form
-app.config['SECRET_KEY'] = "kadjsfioawu39r89gjv9vz#9t8af"
-# initialize flask_sqlalchemy
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
+# # initialize flask_sqlalchemy using sqlite
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
+# initialize flask_sqlalchemy using postgreSQL which can work with Heroku.
+
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL", "sqlite:///blog.db")  # the DATABASE_URL can
+# be obtained from Heroku > Setting > Config Vars; it's also specified that iff the DATABASE_URL is not provided,
+# run locally
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# # configure a Secret key to use flask form using sqlite
+# app.config['SECRET_KEY'] = "kadjsfioawu39r89gjv9vz#9t8af"
+# configure a Secret Key to use flask form with postgreSQL
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 db = MySQLAlchemy(app)
 # initialize CKEditor
 ckeditor = CKEditor(app)

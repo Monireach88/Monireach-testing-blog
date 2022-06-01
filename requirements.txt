@@ -40,6 +40,7 @@ oauth==1.0.1
 outcome==1.1.0
 pandas==1.4.2
 Pillow==9.1.1
+psycopg2-binary==2.9.3
 pycparser==2.21
 PyJWT==2.4.0
 pyOpenSSL==22.0.0
